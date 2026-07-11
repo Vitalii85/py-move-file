@@ -10,7 +10,10 @@ def move_file(command: str) -> None:
         return
 
     if commands_list[2][-1] == "/":
-        commands_list[2] += commands_list[1].split("/")[-1]
+        commands_list[2] = os.path.join(
+            commands_list[2],
+            os.path.basename(commands_list[1])
+        )
 
     folders = commands_list[2].split("/")
     new_path = ""
@@ -18,7 +21,7 @@ def move_file(command: str) -> None:
         new_path = os.path.join(new_path, folders[i])
         try:
             os.mkdir(new_path)
-        except OSError:
+        except FileExistsError:
             pass
 
     try:
