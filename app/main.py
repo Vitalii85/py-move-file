@@ -14,16 +14,10 @@ def move_file(command: str) -> None:
     if destination.endswith("/") or os.path.isdir(destination):
         destination = os.path.join(destination, os.path.basename(source))
 
-    normalized = os.path.normpath(destination)
-    folders = normalized.split(os.sep)[:-1]
-    current_path = ""
-    for folder in folders:
-        current_path = os.path.join(current_path, folder)
-        if not os.path.exists(current_path):
-            try:
-                os.mkdir(current_path)
-            except OSError:
-                return
+    directory = os.path.dirname(destination)
+
+    if directory and not os.path.exists(directory):
+        os.makedirs(directory)
 
     try:
         with (
